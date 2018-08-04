@@ -1,0 +1,21 @@
+version: "2"
+
+services:
+  pages:
+    image: anaxexp/gitlab:$GITLAB_MAJOR_VER
+    environment:
+      GITLAB_PAGES_DOMAIN: pages.gitlab.loc
+    command: /etc/init.d/pages
+
+  workhorse:
+    image: anaxexp/gitlab
+    command: /etc/init.d/workhorse
+
+  nginx:
+    image: $IMAGE
+    environment:
+      DEBUG: 1
+      GITLAB_PAGES_DOMAIN: pages.gitlab.loc
+    depends_on:
+      - workhorse
+      - pages
